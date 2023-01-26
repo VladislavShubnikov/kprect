@@ -17,7 +17,6 @@ kp::SolverFast::SolverFast(Rect& cont, std::vector<Rect>& list)
 {
     m_container = cont;
     m_figures = list;
-    m_numPermutations = 0;
     const int numFigs = static_cast<int>(list.size());
     if (numFigs > kp::maxFigures)
     {

@@ -12,6 +12,10 @@
 namespace kp
 {
 
+    /**
+     * @brief Position in 2d , integer coordinates
+     */
+
     class Pos
     {
     public:
@@ -21,6 +25,10 @@ namespace kp
         explicit Pos(int xx, int yy) :m_x(xx), m_y(yy) { }
     };
 
+    /**
+     * @brief 2d rectangle description with id, used to store
+       several rectangles with the same size in set
+     */
     class Rect
     {
     public:

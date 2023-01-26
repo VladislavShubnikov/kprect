@@ -21,7 +21,9 @@ namespace kp
     class BinPlacement
     {
     public:
+        //! Storage to keep all arranged rectangles
         std::vector<RectPlacement> m_bins;
+        //! Current bin, increasing number with iterations
         int m_curBin = -1;
         //! width of container
         int m_w = 0;
@@ -32,12 +34,34 @@ namespace kp
 
         // methods
 
+        /**
+         * @brief Initialize containers
+         */
         void init(int w, int h);
 
+        /**
+         * @brief Attempt to place new given rectangle
+         * @return true , if arranged successfully
+         */
         bool tryPlaceRect(Rect &rect);
+
+
+        /**
+         * @brief Allocate new container and initialize it.
+         */
         void allocateNewBin();
+
+        /**
+         * @brief Calculate possible position for rectangle in container
+         * @return true , if arranged successfully
+         */
         bool getPossiblePosition(Rect &rect);
 
+        /**
+         * @brief Create bmp files with arranged rectangles
+         * @param container Container
+         * @param testName Name of test
+         */
         void log(Rect &container, const char *testName);
     };
 

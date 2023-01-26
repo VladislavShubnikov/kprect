@@ -20,7 +20,7 @@ namespace kp
 {
 
 /**
- * @brief Bitmap simple operations: drawing functions
+ * @brief Image simple operations: drawing functions
  * and save to bmp format
  */
 class Bitmap
@@ -39,6 +39,9 @@ public:
         destroy();
     }
 
+    /**
+     * @brief Destroy image memory
+     */
     void destroy();
 
     /**

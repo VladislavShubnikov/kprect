@@ -15,6 +15,9 @@
 namespace kp
 {
 
+    /**
+     * @brief Knack-pack solver with optimized algorithm
+     */
     class SolverFast : public SolverSlow
     {
     public:

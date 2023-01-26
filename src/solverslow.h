@@ -20,6 +20,9 @@
 namespace kp
 {
 
+    /**
+     * @brief Knack-pack solver with slow algorithm
+     */
     class SolverSlow
     {
     public:
@@ -36,7 +39,6 @@ namespace kp
     protected:
         Rect m_container;
         std::vector<Rect> m_figures;
-        int m_numPermutations = 0;
         int m_index = 0;
         int m_numIterations = 0;
         double m_timeFillSeconds = 0.0;
@@ -47,7 +49,7 @@ namespace kp
         RectSet m_bestRectSet;
 
     private:
-        void getAllPermutations(int iStart, int n, std::vector<int> &indices);
+        static int getAllPermutations(std::vector<int> &indices);
 
         bool tryToPlace(std::vector<int> &indices, std::vector<bool> &rotated);
     };

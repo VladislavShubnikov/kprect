@@ -33,6 +33,9 @@
 // ************************************************************
 namespace kp
 {
+    /**
+     * @brief 2d point description (integer coordinates)
+     */
     struct Point2d {
         int x, y;
     };
@@ -86,23 +89,19 @@ kp::Bitmap::Bitmap(int w, int h)
     assert(w < 1024 * 8);
     assert(h < 1024 * 8);
     m_width =  w; m_height = h;
-    // m_pixels = nullptr;
 }
 
 
 void kp::Bitmap::destroy()
 {
-    //delete[] m_pixels;
-    //m_pixels = nullptr;
 }
 bool kp::Bitmap::create()
 {
-    //delete[] m_pixels;
     try {
-        //m_pixels = new uint32_t[m_width * m_height];
         m_pixels.resize(m_width * m_height);
     } catch (std::bad_alloc& exc)
     {
+        exc;
         return false;
     }
     clear(255, 255, 255);
@@ -183,9 +182,7 @@ int kp::Bitmap::writeToBuffer(uint8_t *buffer, int bufMaxSize)
     memcpy(dst, &info, sizeof(info));
     dst += sizeof(info);
 
-    // write RGB bits^M
-    //int numPixels = m_width * m_height;
-    //int j = 0;
+    // write RGB bits
     auto* pix = (uint8_t *)m_pixels.data();
     // write with mirror image on height
     for (int y = 0; y < m_height; y++)
@@ -639,12 +636,12 @@ void kp::Bitmap::drawDigitLetter(char cLetter,
     for (int i = 1; i < numPoints; i++)
     {
         Point2d pA = points[i - 1], pB = points[i];
-        float x = (float)pA.x / 47.0f;
-        float y = (float)pA.y / 64.0f;
+        float x = (float)pA.x / 47.0F;
+        float y = (float)pA.y / 64.0F;
         pA.x = (int)((float)xMin + (float)wDst * x);
         pA.y = (int)((float)yMin + (float)hDst * y);
-        x = (float)pB.x / 47.0f;
-        y = (float)pB.y / 64.0f;
+        x = (float)pB.x / 47.0F;
+        y = (float)pB.y / 64.0F;
         pB.x = (int)((float)xMin + (float)wDst * x);
         pB.y = (int)((float)yMin + (float)hDst * y);
         drawLine(pA.x, pA.y, pB.x, pB.y, colorARGB);

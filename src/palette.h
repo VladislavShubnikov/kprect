@@ -12,6 +12,9 @@
 #include <cstdint>
 namespace kp
 {
+/**
+ * @brief Simplified 128-colors palette for nice visulization
+ */
 class Palette
 {
 public:

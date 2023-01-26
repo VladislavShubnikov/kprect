@@ -238,8 +238,25 @@ static void testGen()
 
 }
 
+void testPermutations()
+{
+    kp::Rect    container(100, 100);
+    std::vector<kp::Rect>   figures = {
+            kp::Rect(10, 10, 0),
+            kp::Rect(10, 10, 1),
+            kp::Rect(10, 10, 2),
+            kp::Rect(10, 10, 3),
+            kp::Rect(10, 10, 4),
+    };
+    kp::SolverSlow solver(container, figures);
+    const int numPerm = solver.getMinContainersForSet();
+    std::cout << "num permutations for " << figures.size() <<
+        " figures is " << numPerm << std::endl;
+}
+
 int main()
 {
+    testPermutations();
     testSingle5Rects();
     testGen();
     testTwoBins();

@@ -51,13 +51,10 @@ void kp::RectSet::allocateNewBin()
 
 void kp::RectSet::log(Rect& container, const char *testName)
 {
-    const int W_BMP = container.m_w;
-    const int H_BMP = container.m_h;
-
     const int numBins = static_cast<int>(m_bins.size());
     for (int bin = 0; bin < numBins; bin++)
     {
-        kp::Bitmap bitmap(W_BMP, H_BMP);
+        kp::Bitmap bitmap(container.m_w, container.m_h);
         if (!bitmap.create())
         {
             return;

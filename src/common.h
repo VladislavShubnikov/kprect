@@ -14,10 +14,16 @@
 namespace kp
 {
 
+    //! Maximum possible figures (rectangles) in set
     const int maxFigures = 100; // NOLINT
+    //! Maximum possible container width
     const int maxContainerWidth = 2400; // NOLINT
 
-    uint64_t getFactorial(uint64_t v); // NOLINT
+    /**
+    * @brief Calculate factorial of given input
+      @return factorial of x
+     */
+    uint64_t getFactorial(uint64_t x); // NOLINT
 
 }
 #endif

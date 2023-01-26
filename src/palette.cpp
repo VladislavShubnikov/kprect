@@ -7,10 +7,10 @@
 // ------------------------------------------------------------------
 
 #include "palette.h"
-#define rgb(r,g,b)      ((r<<16)|(g<<8)|b)
+#define rgb(r,g,b)      (((r)<<16)|((g)<<8)|(b))
 
-static const int s_numPalColors = 128;
-static const uint32_t s_palette[s_numPalColors] =
+static const int sNumPalColors = 128;
+static const uint32_t sPalette[sNumPalColors] =
 {
     // 0
     rgb(120,180,90), rgb(128,0,0), rgb(0,128,0), rgb(128,128,0),
@@ -56,8 +56,8 @@ static const uint32_t s_palette[s_numPalColors] =
 
 void kp::Palette::getBackground(int index, uint32_t& r, uint32_t& g, uint32_t& b)
 {
-    const int i = index & (s_numPalColors - 1);
-    uint32_t rgb = s_palette[i];
+    const int i = index & (sNumPalColors - 1);
+    uint32_t rgb = sPalette[i];
     b = rgb & 0xff;
     g = (rgb >> 8) & 0xff;
     r = (rgb >> 16) & 0xff;
@@ -65,8 +65,8 @@ void kp::Palette::getBackground(int index, uint32_t& r, uint32_t& g, uint32_t& b
 
 void kp::Palette::getForeground(int index, uint32_t& r, uint32_t& g, uint32_t& b)
 {
-    const int i = index & (s_numPalColors - 1);
-    uint32_t rgb = s_palette[i];
+    const int i = index & (sNumPalColors - 1);
+    uint32_t rgb = sPalette[i];
     b = rgb & 0xff;
     g = (rgb >> 8) & 0xff;
     r = (rgb >> 16) & 0xff;

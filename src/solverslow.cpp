@@ -14,13 +14,30 @@
 #include "solverslow.h"
 #include "bitmap.h"
 
-// #define PRINT_PERMUTATION
+//! Need to print all indices permutations
+//#define PRINT_PERMUTATION
+
+namespace kp
+{
+    /**
+     * @brief Indices vector permutation.
+     * Used in total permutations generator
+     */
+    struct VecPerm
+    {
+        int                 m_start;
+        std::vector<int>    m_indices;
+        VecPerm(int s, std::vector<int>& vec)
+        {
+            m_start = s; m_indices = vec;
+        }
+    };
+}
 
 kp::SolverSlow::SolverSlow(Rect& cont, std::vector<Rect>& list)
 {
     m_container = cont;
     m_figures = list;
-    m_numPermutations = 0;
     m_timeFillSeconds = 0.0;
     const int numFigs = static_cast<int>(list.size());
     if (numFigs > kp::maxFigures)
@@ -33,7 +50,6 @@ kp::SolverSlow::SolverSlow()
 {
     m_container.m_w = m_container.m_h = 0;
     m_figures.clear();
-    m_numPermutations = 0;
     m_timeFillSeconds = 0.0;
 }
 
@@ -42,7 +58,7 @@ void kp::SolverSlow::printTaskConditions() const
     std::cout << "Task conditions: " << std::endl;
     std::cout << m_container.m_w << "," << m_container.m_h << std::endl;
     std::cout << m_figures.size() << std::endl;
-    for (auto& r: m_figures)
+    for (const auto& r: m_figures)
     {
         std::cout << r.m_w << "," << r.m_h << std::endl;
     }
@@ -68,19 +84,71 @@ int kp::SolverSlow::getMinContainersForSet()
     std::cout << "Num figures = " << numFigs << std::endl;
 
     // measure time
+    int numPerm = 0;
     auto startTime = std::chrono::system_clock::now();
     {
-        getAllPermutations(0, numFigs, indices);
+        numPerm = getAllPermutations(indices);
     }
     auto endTime = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = endTime - startTime;
-    double t = (elapsed_seconds.count() * (1));
+    std::chrono::duration<double> elapsedSeconds = endTime - startTime;
+    double t = (elapsedSeconds.count() * (1));
     std::cout << "time elapsed = " << t << " seconds" << std::endl;
 
-
-
-    return m_numPermutations;
+    return numPerm;
 }
+
+int kp::SolverSlow::getAllPermutations(std::vector<int>& indices)
+{
+    const int n = static_cast<int>(indices.size());
+    int numPerm = 0;
+
+    std::stack<VecPerm> stack;
+    stack.push(VecPerm(0, indices));
+    while (!stack.empty())
+    {
+        VecPerm desc = stack.top();
+        stack.pop();
+        if (desc.m_start >= n - 1)
+        {
+            #if defined(PRINT_PERMUTATION)
+            // print out
+            std::cout << "permutation: " << std::endl;
+            for (int k = 0; k < n; k++)
+            {
+                std::cout << desc.m_indices[k] << ",";
+            }
+            std::cout << std::endl;
+            #endif
+            // do smth with indices vector (n elements)
+            numPerm++;
+
+        }
+        else
+        {
+            for (int i = desc.m_start; i < n; i++)
+            {
+                // swap elements i, iStart
+                {
+                    int temp = desc.m_indices[i];
+                    desc.m_indices[i] = desc.m_indices[desc.m_start];
+                    desc.m_indices[desc.m_start] = temp;
+                }
+                VecPerm vecNew(desc.m_start + 1, desc.m_indices);
+                stack.push(vecNew);
+                // swap back
+                {
+                    int temp = desc.m_indices[i];
+                    desc.m_indices[i] = desc.m_indices[desc.m_start];
+                    desc.m_indices[desc.m_start] = temp;
+                }
+            } // for i
+
+        }
+    }
+    return numPerm;
+}
+
+/*
 void kp::SolverSlow::getAllPermutations(int iStart, int n, std::vector<int>& indices)
 {
     if (iStart >= n - 1)
@@ -94,14 +162,7 @@ void kp::SolverSlow::getAllPermutations(int iStart, int n, std::vector<int>& ind
         }
         std::cout << std::endl;
 #endif
-        // build figures set for current permutation
-        std::vector<Rect> listFigures;
-        for (int k = 0; k < n; k++)
-        {
-            listFigures.push_back(m_figures[indices[k]]);
-        }
-        // processFiguresSet(listFigures);
-
+        // do smth with indices vector (n elements)
         m_numPermutations++;
         return;
     }
@@ -123,7 +184,7 @@ void kp::SolverSlow::getAllPermutations(int iStart, int n, std::vector<int>& ind
         }
     } // for i
 }
-
+*/
 
 int kp::SolverSlow::fillContainer(const char *testName)
 {
@@ -186,7 +247,7 @@ int kp::SolverSlow::fillContainer(const char *testName)
         // new random rotations
         for (int i = 0; i < numFigures; i++)
         {
-            rotated.at(i) = (gen() & 1);
+            rotated.at(i) = ((gen() & 1) != 0);
         }
 
         tryToPlace(indices, rotated);
